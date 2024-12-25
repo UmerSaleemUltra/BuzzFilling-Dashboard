@@ -1,14 +1,13 @@
 import express from 'express';
 import db from './config/db.js';
-import cors from 'cors'
+import cors from 'cors';
 import bodyParser from "body-parser";
 import authRoutes from "./routes/userauth.js";
-import adminRoutes from './routes/admin.js'
+import adminRoutes from './routes/admin.js';
 
 const app = express();
 app.use(bodyParser.json());
-
-app.use(cors()); // Enable CORS for all routes
+app.use(cors());
 
 // Connect to MongoDB
 db.connection.once('open', () => {
@@ -17,7 +16,6 @@ db.connection.once('open', () => {
 
 app.use("/api/auth/user", authRoutes);
 app.use("/api/auth/admin", adminRoutes);
-app.use("/api/auth/user", authRoutes);
 
-
-// Start the Server
+// Export the app for Vercel
+export default app;
