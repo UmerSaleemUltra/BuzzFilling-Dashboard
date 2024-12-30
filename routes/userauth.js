@@ -67,8 +67,8 @@ router.post("/login", async (req, res) => {
 // Get All Users Route
 router.get("/users", async (req, res) => {
   try {
-    // Retrieve all users, but only select specific fields: firstName, lastName, businessName, email, and state
-    const users = await User.find({}, 'firstName lastName businessName email state');
+    // Retrieve all users, selecting fields including createdAt
+    const users = await User.find({}, 'firstName lastName businessName email state createdAt');
 
     // Check if there are any users
     if (!users || users.length === 0) {
@@ -82,6 +82,5 @@ router.get("/users", async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 });
-
 
 export default router;

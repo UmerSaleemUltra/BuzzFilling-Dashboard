@@ -17,5 +17,9 @@ db.connection.once('open', () => {
 app.use("/api/auth/user", authRoutes);
 app.use("/api/auth/admin", adminRoutes);
 
-// Export the app for Vercel
+const port  = 3000
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
 export default app;
