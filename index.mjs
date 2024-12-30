@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from "body-parser";
 import authRoutes from "./routes/userauth.js";
 import adminRoutes from './routes/admin.js';
+import emailRoutes from "./routes/email.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,6 +17,7 @@ db.connection.once('open', () => {
 
 app.use("/api/auth/user", authRoutes);
 app.use("/api/auth/admin", adminRoutes);
+app.use("/api/", emailRoutes);
 
 const port  = 3000
 
