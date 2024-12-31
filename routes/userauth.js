@@ -83,4 +83,55 @@ router.get("/users", async (req, res) => {
   }
 });
 
+
+// Delete Account Route
+router.delete("/delete", async (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is required." });
+  }
+
+  try {
+    // Find the user by their ID and delete
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({ message: "User deleted successfully." });
+  } catch (error) {
+    console.error("Error during account deletion:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+
+  router.patch("/update", async (req, res) => {
+    try {
+      const { userId, updatedData } = req.body;
+  
+      // Find the user by ID
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      // Optionally hash password if it's being updated
+      if (updatedData.password) {
+        updatedData.password = await bcrypt.hash(updatedData.password, 12); // Example of hashing
+      }
+  
+      // Update the user data
+      Object.assign(user, updatedData); // Merges updatedData into the user object
+  
+      // Save the updated user
+      await user.save();
+  
+      res.status(200).json({ message: "User updated successfully", user });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error", error });
+    }
+  });
+});
+
 export default router;
